@@ -10,6 +10,8 @@ import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.redis.RedisDecoder;
+import io.netty.handler.codec.redis.RedisEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Server {
     private ServerConfig config;
+    EventLoopGroup ioLoopGroup;
+    EventLoopGroup workerGroup;
+    Channel channel;
 
     public void start() {
-        EventLoopGroup ioLoopGroup =
-                new NioEventLoopGroup(config.getIoWorkerCount());
-        EventLoopGroup workerGroup
-                = new NioEventLoopGroup(config.getWorkerCount());
+        ioLoopGroup = new NioEventLoopGroup(config.getIoWorkerCount());
+        workerGroup = new NioEventLoopGroup(config.getWorkerCount());
 
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
@@ -40,13 +43,24 @@ public class Server {
                     .handler(new LoggingHandler(LogLevel.DEBUG))
                     .childHandler(new ServerInitializer());
 
-            Channel ch = serverBootstrap.bind(config.getPort()).channel();
-            ch.closeFuture().sync();
+            channel = serverBootstrap.bind(config.getPort()).channel();
+            channel.closeFuture().addListener(future -> {
+                stop();
+            });
         } catch (Exception e) {
             log.error("Exception caught", e);
-        } finally {
-            workerGroup.shutdownGracefully();
+        }
+    }
+
+    public void stop() {
+        if (ioLoopGroup != null && !ioLoopGroup.isShutdown()) {
             ioLoopGroup.shutdownGracefully();
+            ioLoopGroup = null;
+        }
+
+        if (workerGroup != null && !workerGroup.isShutdown()) {
+            workerGroup.shutdownGracefully();
+            workerGroup = null;
         }
     }
 
@@ -54,7 +68,10 @@ public class Server {
 
         @Override
         protected void initChannel(NioSocketChannel ch) throws Exception {
-        
+//            ch.pipeline().addLast(new RedisDecoder())
+//                    .addLast(new RedisEncoder());
+            ch.pipeline().addLast(new RESPDecoder())
+                    .addLast(new RESPCommandHandler());
         }
     }
 }
