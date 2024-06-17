@@ -11,6 +11,6 @@ public class RESPCommandHandler extends ChannelInboundHandlerAdapter {
             ctx.fireChannelRead(msg);
         }
 
-
+        System.err.println(msg);
     }
 }
