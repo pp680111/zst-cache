@@ -23,6 +23,10 @@ public class Server {
     EventLoopGroup workerGroup;
     Channel channel;
 
+    public Server(ServerConfig config) {
+        this.config = config;
+    }
+
     public void start() {
         ioLoopGroup = new NioEventLoopGroup(config.getIoWorkerCount());
         workerGroup = new NioEventLoopGroup(config.getWorkerCount());
@@ -47,6 +51,7 @@ public class Server {
             channel.closeFuture().addListener(future -> {
                 stop();
             });
+            log.info("zst-cache server started");
         } catch (Exception e) {
             log.error("Exception caught", e);
         }
@@ -68,6 +73,7 @@ public class Server {
 
         @Override
         protected void initChannel(NioSocketChannel ch) throws Exception {
+            // netty原生自带了RESP协议的编解码器，不过这里还是手写一份
 //            ch.pipeline().addLast(new RedisDecoder())
 //                    .addLast(new RedisEncoder());
             ch.pipeline().addLast(new RESPDecoder())
