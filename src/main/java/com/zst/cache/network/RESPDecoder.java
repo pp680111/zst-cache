@@ -19,7 +19,7 @@ public class RESPDecoder extends ByteToMessageDecoder {
 
         int readableBytes = in.readableBytes();
         for (int i = 0; i < readableBytes; i++) {
-            buffer.append((char) in.getByte(i));
+            buffer.append((char) in.readByte());
 
             if (buffer.length() >= 2 && buffer.charAt(buffer.length() - 2) == '\r' && buffer.charAt(buffer.length() - 1) == '\n') {
                 out.add(buffer.substring(0, buffer.length() - 2));
