@@ -2,6 +2,7 @@ package com.zst.cache.data;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class RESPBulkString {
-    private List<String> value;
+    private String value;
 }

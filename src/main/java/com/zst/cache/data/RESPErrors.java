@@ -1,5 +1,6 @@
 package com.zst.cache.data;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class RESPErrors {
+    private String type;
     private String error;
 }

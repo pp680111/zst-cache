@@ -1,5 +1,7 @@
 package com.zst.cache.data.aggregator;
 
+import com.zst.cache.data.RESPBulkString;
+
 /**
  * 大字符串的聚合器
  */
@@ -9,8 +11,17 @@ public class BulkStringAggregator implements RESPAggregator {
     private String result;
 
     public void append(String line) {
+        if (isComplete) {
+            throw new IllegalStateException("data aggregate is complete");
+        }
+
         if (line.startsWith("$")) {
             expectLength = Integer.parseInt(line.substring(1));
+
+            // 如果长度为1的话，说明是一个null字符串，直接complete
+            if (expectLength == -1) {
+                isComplete = true;
+            }
             return;
         }
 
@@ -33,7 +44,7 @@ public class BulkStringAggregator implements RESPAggregator {
             throw new IllegalStateException("BulkString is not complete");
         }
 
-        return result;
+        return new RESPBulkString(result);
     }
 
 }
