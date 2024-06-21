@@ -1,6 +1,7 @@
 package com.zst.cache.data.aggregator;
 
 import com.zst.cache.data.RESPArray;
+import com.zst.cache.data.RESPData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * 数据类型的数据聚合器
  */
 public class ArrayAggregator implements RESPAggregator {
-    private List<Object> value;
+    private List<RESPData> value;
     private RESPAggregator aggregator;
     private boolean isComplete = false;
     private int size;
@@ -61,7 +62,7 @@ public class ArrayAggregator implements RESPAggregator {
     }
 
     @Override
-    public Object getData() {
+    public RESPData getData() {
         if (!isComplete) {
             throw new IllegalStateException("data aggregate not complete");
         }

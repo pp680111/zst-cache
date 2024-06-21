@@ -1,5 +1,6 @@
 package com.zst.cache.data.aggregator;
 
+import com.zst.cache.data.RESPData;
 import com.zst.cache.data.RESPInteger;
 
 public class IntegerAggregator implements RESPAggregator {
@@ -19,7 +20,7 @@ public class IntegerAggregator implements RESPAggregator {
     }
 
     @Override
-    public Object getData() {
+    public RESPData getData() {
         if (!isComplete) {
             throw new IllegalStateException("Aggregator is not complete");
         }

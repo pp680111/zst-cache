@@ -1,5 +1,6 @@
 package com.zst.cache.data.aggregator;
 
+import com.zst.cache.data.RESPData;
 import com.zst.cache.data.RESPErrors;
 
 /**
@@ -28,7 +29,7 @@ public class ErrorAggregator implements RESPAggregator {
     }
 
     @Override
-    public Object getData() {
+    public RESPData getData() {
         if (!complete) {
             throw new IllegalStateException("Aggregator is not complete");
         }

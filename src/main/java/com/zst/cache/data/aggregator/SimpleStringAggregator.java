@@ -1,5 +1,6 @@
 package com.zst.cache.data.aggregator;
 
+import com.zst.cache.data.RESPData;
 import com.zst.cache.data.RESPSimpleString;
 
 /**
@@ -23,7 +24,7 @@ public class SimpleStringAggregator implements RESPAggregator {
     }
 
     @Override
-    public Object getData() {
+    public RESPData getData() {
         if (data == null) {
             throw new IllegalStateException("BulkString is not complete");
         }

@@ -26,14 +26,5 @@ public class RESPDecoder extends ByteToMessageDecoder {
                 buffer.delete(0, buffer.length());
             }
         }
-
-        // TODO 要处理一下没有数据可返回的情况莫不然会抛出异常RESPDecoder.decode() did not read anything but decoded a message
-
-//        int readableBytes = in.readableBytes();
-//        byte[] bytes = new byte[readableBytes];
-//        in.readBytes(bytes, 0, readableBytes);
-//
-//        out.add(new String(bytes, StandardCharsets.UTF_8));
-        // 老师的demo是直接吧整个buffer里面的数据读出来转成字符串，但是这样不会出现半包或者粘包问题吗？
     }
 }

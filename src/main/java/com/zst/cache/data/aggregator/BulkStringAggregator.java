@@ -1,6 +1,9 @@
 package com.zst.cache.data.aggregator;
 
 import com.zst.cache.data.RESPBulkString;
+import com.zst.cache.data.RESPData;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * 大字符串的聚合器
@@ -39,12 +42,12 @@ public class BulkStringAggregator implements RESPAggregator {
     }
 
     @Override
-    public Object getData() {
+    public RESPData getData() {
         if (!isComplete) {
             throw new IllegalStateException("BulkString is not complete");
         }
 
-        return new RESPBulkString(result);
+        return new RESPBulkString(result.getBytes(StandardCharsets.UTF_8).length, result);
     }
 
 }

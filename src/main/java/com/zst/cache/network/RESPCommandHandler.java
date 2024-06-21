@@ -2,6 +2,7 @@ package com.zst.cache.network;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
+import com.zst.cache.data.RESPSimpleString;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.redis.RedisMessage;
@@ -16,5 +17,8 @@ public class RESPCommandHandler extends ChannelInboundHandlerAdapter {
         }
 
         log.debug("RESPCommandHandler receive msg ", JSON.toJSONString(msg));
+
+        RESPSimpleString result = new RESPSimpleString("OK");
+        ctx.writeAndFlush(result);
     }
 }
