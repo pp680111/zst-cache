@@ -47,7 +47,7 @@ public class BulkStringAggregator implements RESPAggregator {
             throw new IllegalStateException("BulkString is not complete");
         }
 
-        return new RESPBulkString(result.getBytes(StandardCharsets.UTF_8).length, result);
+        return new RESPBulkString(result);
     }
 
 }

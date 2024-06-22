@@ -77,6 +77,7 @@ public class Server {
 //            ch.pipeline().addLast(new RedisDecoder())
 //                    .addLast(new RedisEncoder());
             ch.pipeline().addLast(new RESPDecoder())
+                    .addLast(new RESPEncoder())
                     .addLast(new RESPDataAggregator())
                     .addLast(new RESPCommandHandler());
         }

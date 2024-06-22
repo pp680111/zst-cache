@@ -1,11 +1,9 @@
 package com.zst.cache.data;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,10 +13,14 @@ import java.util.List;
  */
 @Getter
 @Setter
-@AllArgsConstructor
 public class RESPBulkString implements RESPData {
     private int byteCount;
     private String value;
+
+    public RESPBulkString(String value) {
+        this.value = value;
+        this.byteCount = value == null ? -1 : value.getBytes(StandardCharsets.UTF_8).length;
+    }
 
     @Override
     public List<String> toLines() {
