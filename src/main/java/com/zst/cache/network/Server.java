@@ -29,7 +29,8 @@ public class Server {
 
     public void start() {
         ioLoopGroup = new NioEventLoopGroup(config.getIoWorkerCount());
-        workerGroup = new NioEventLoopGroup(config.getWorkerCount());
+        // worker是实际处理数据的线程，为了避免并发操作数据的问题，采用Redis的思路，只保留一个线程来负责处理数据请求
+        workerGroup = new NioEventLoopGroup(1);
 
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();

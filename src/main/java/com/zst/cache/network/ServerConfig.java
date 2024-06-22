@@ -8,5 +8,5 @@ import lombok.Setter;
 public class ServerConfig {
     private int port;
     private int ioWorkerCount = 2;
-    private int workerCount = Runtime.getRuntime().availableProcessors();
+//    private int workerCount = 1;
 }
