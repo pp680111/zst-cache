@@ -66,8 +66,6 @@ public class ArrayAggregator implements RESPAggregator {
         if (!isComplete) {
             throw new IllegalStateException("data aggregate not complete");
         }
-        RESPArray array = new RESPArray();
-        array.setValue(value);
-        return array;
+        return new RESPArray(value);
     }
 }
