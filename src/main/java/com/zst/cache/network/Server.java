@@ -1,5 +1,6 @@
 package com.zst.cache.network;
 
+import com.zst.cache.core.CacheFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -80,7 +81,7 @@ public class Server {
             ch.pipeline().addLast(new RESPDecoder())
                     .addLast(new RESPEncoder())
                     .addLast(new RESPDataAggregator())
-                    .addLast(new RESPCommandHandler());
+                    .addLast(new RESPCommandHandler(CacheFactory.getCache()));
         }
     }
 }

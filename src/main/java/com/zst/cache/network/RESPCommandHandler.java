@@ -1,49 +1,55 @@
 package com.zst.cache.network;
 
 import com.alibaba.fastjson2.JSON;
+import com.zst.cache.command.Command;
+import com.zst.cache.command.CommandManager;
+import com.zst.cache.command.CommonReply;
+import com.zst.cache.core.Cache;
 import com.zst.cache.data.RESPArray;
 import com.zst.cache.data.RESPBulkString;
+import com.zst.cache.data.RESPData;
 import com.zst.cache.data.RESPSimpleString;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.redis.RedisMessage;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 
+@AllArgsConstructor
 @Slf4j
 public class RESPCommandHandler extends ChannelInboundHandlerAdapter {
+    private Cache cache;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (!(msg instanceof RedisMessage)) {
+        if (!(msg instanceof RESPData)) {
             ctx.fireChannelRead(msg);
         }
 
         log.debug("RESPCommandHandler receive msg ", JSON.toJSONString(msg));
 
-        if (msg instanceof RESPArray) {
-            RESPArray commandArray = (RESPArray) msg;
-            RESPBulkString command = (RESPBulkString) commandArray.getValue().get(0);
-            switch (command.getValue()) {
-                case "ping":
-                    ctx.writeAndFlush(new RESPSimpleString("PONG"));
-                    break;
-                case "client":
-                    ctx.writeAndFlush(new RESPSimpleString("OK"));
-                    break;
-                case "config":
-                    RESPArray configArray = new RESPArray();
-                    configArray.setValue(Arrays.asList(new RESPBulkString("databases"), new RESPBulkString("16")));
-                    ctx.writeAndFlush(configArray);
-                    break;
-                case "scan":
-                    RESPArray scanArray = new RESPArray();
-                    scanArray.setValue(Arrays.asList(new RESPBulkString("0"), new RESPBulkString("zst"), new RESPBulkString("tsz")));
-                    ctx.writeAndFlush(scanArray);
-                    break;
-                default:
-                    ctx.writeAndFlush(new RESPSimpleString("ERR unknown command '"+ command.getValue() + "'"));
+        RESPArray commandArray = (RESPArray) msg;
+        Command command = CommandManager.getCommand(commandArray);
+        if (command == null) {
+            ctx.writeAndFlush(CommonReply.UNKNOWN_COMMAND);
+        } else {
+            ctx.writeAndFlush(command.execute(cache, commandArray));
+        }
+    }
+
+    private RESPData executeCommand(Command command, RESPArray commandArray) {
+        try {
+            RESPData result = command.execute(cache, commandArray);
+            if (result != null) {
+                return result;
+            } else {
+                throw new RuntimeException("Command execute failed");
             }
+        } catch (Exception e) {
+            log.error("execute command failed", e);
+            return CommonReply.EXECUTE_FAILED;
         }
     }
 }
