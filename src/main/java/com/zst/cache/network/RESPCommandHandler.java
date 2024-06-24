@@ -28,18 +28,19 @@ public class RESPCommandHandler extends ChannelInboundHandlerAdapter {
             ctx.fireChannelRead(msg);
         }
 
-        log.debug("RESPCommandHandler receive msg ", JSON.toJSONString(msg));
-
         RESPArray commandArray = (RESPArray) msg;
         Command command = CommandManager.getCommand(commandArray);
-        if (command == null) {
-            ctx.writeAndFlush(CommonReply.UNKNOWN_COMMAND);
-        } else {
-            ctx.writeAndFlush(command.execute(cache, commandArray));
-        }
+        RESPData result = executeCommand(command, commandArray);
+
+        ctx.writeAndFlush(result);
+
     }
 
     private RESPData executeCommand(Command command, RESPArray commandArray) {
+        if (command == null) {
+            return CommonReply.UNKNOWN_COMMAND;
+        }
+
         try {
             RESPData result = command.execute(cache, commandArray);
             if (result != null) {

@@ -12,6 +12,12 @@ public interface CommonReply {
      * OK
      */
    RESPSimpleString OK = new RESPSimpleString("OK");
+
+    /**
+     * NONE
+     */
+    RESPSimpleString NONE = new RESPSimpleString("none");
+
     /**
      * 空Bulk String
      */

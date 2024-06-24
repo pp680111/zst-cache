@@ -32,8 +32,8 @@ public class ScanCommand extends Command {
             return CommonReply.WRONG_ARG_NUMBER;
         }
 
-        RESPInteger cursor = (RESPInteger) argList.get(1);
-        RESPInteger count = null;
+        RESPBulkString cursor = (RESPBulkString) argList.get(1);
+        RESPBulkString count = null;
         RESPBulkString matchPattern = null;
         RESPBulkString type = null;
 
@@ -45,7 +45,7 @@ public class ScanCommand extends Command {
                     matchPattern = (RESPBulkString) argValue;
                     break;
                 case "COUNT":
-                    count = (RESPInteger) argValue;
+                    count = (RESPBulkString) argValue;
                     break;
                 case "TYPE":
                     type = (RESPBulkString) argValue;
@@ -55,16 +55,16 @@ public class ScanCommand extends Command {
         }
 
         Set<String> keys = cache.getKeys();
-        int index = 0;
+        int index = 0, cursorValue = Integer.parseInt(cursor.getValue());
         List<String> result = new ArrayList<>();
 
         for (String key : keys) {
-            if (index < cursor.getValue()) {
+            if (index < cursorValue) {
                 continue;
             }
 
             result.add(key);
-            if (count != null && result.size() >= count.getValue()) {
+            if (count != null && result.size() >= Integer.parseInt(count.getValue())) {
                 break;
             }
         }
@@ -74,7 +74,7 @@ public class ScanCommand extends Command {
 
     private RESPArray buildReply(int index,  List<String> result) {
         RESPInteger nextCursor = new RESPInteger(index);
-        List keys = result.stream().map(RESPBulkString::new).toList();
+        List keys = result.isEmpty() ? null : result.stream().map(RESPBulkString::new).toList();
         RESPArray keysArray = new RESPArray(keys);
         return new RESPArray(Arrays.asList(nextCursor, keysArray));
     }
