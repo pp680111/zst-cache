@@ -20,13 +20,18 @@ public class RESPArray implements RESPData {
 
     @Override
     public List<String> toLines() {
-        if (value == null || value.size() == 0) {
-            return Collections.emptyList();
+        List<String> ret = new ArrayList<>();
+        if (value == null) {
+            ret.add("*-1");
+        } else if (value.size() == 0) {
+            ret.add("*0");
+        } else {
+            ret.add("*" + value.size());
         }
 
-        List<String> ret = new ArrayList<>();
-        ret.add("*" + value.size());
-        value.forEach(item -> ret.addAll(item.toLines()));
+        if (value != null) {
+            value.forEach(item -> ret.addAll(item.toLines()));
+        }
         return ret;
     }
 }
