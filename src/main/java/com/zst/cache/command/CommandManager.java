@@ -8,6 +8,7 @@ import com.zst.cache.command.impl.PingCommand;
 import com.zst.cache.command.impl.QuitCommand;
 import com.zst.cache.command.impl.ScanCommand;
 import com.zst.cache.command.impl.SetCommand;
+import com.zst.cache.command.impl.TtlCommand;
 import com.zst.cache.command.impl.TypeCommand;
 import com.zst.cache.data.RESPArray;
 import com.zst.cache.data.RESPBulkString;
@@ -33,6 +34,7 @@ public class CommandManager {
         registerCommand("quit", new QuitCommand());
         registerCommand("info", new InfoCommand());
         registerCommand("type", new TypeCommand());
+        registerCommand("ttl", new TtlCommand());
     }
 
     /**
