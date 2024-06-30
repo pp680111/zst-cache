@@ -8,7 +8,7 @@ import com.zst.cache.data.RESPData;
 
 public class QuitCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "QUIT";
     }
 

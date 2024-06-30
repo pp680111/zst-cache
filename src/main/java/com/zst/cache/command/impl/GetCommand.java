@@ -14,7 +14,7 @@ import com.zst.cache.data.RESPData;
  */
 public class GetCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "GET";
     }
 

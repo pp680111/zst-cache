@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class ScanCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "SCAN";
     }
 

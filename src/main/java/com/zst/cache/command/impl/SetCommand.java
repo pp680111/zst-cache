@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class SetCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "SET";
     }
 

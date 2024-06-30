@@ -10,7 +10,7 @@ import com.zst.cache.data.RESPInteger;
 
 public class TtlCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "TTL";
     }
 

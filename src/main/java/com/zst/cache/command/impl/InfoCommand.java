@@ -9,7 +9,7 @@ import com.zst.cache.data.RESPData;
 public class InfoCommand extends Command {
     private static RESPBulkString mockInfo = new RESPBulkString("this is zst custom RESP protocol implement");
     @Override
-    protected String getName() {
+    public String getName() {
         return "INFO";
     }
 

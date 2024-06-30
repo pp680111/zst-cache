@@ -11,7 +11,7 @@ import com.zst.cache.data.RESPSimpleString;
  */
 public class PingCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "PING";
     }
 

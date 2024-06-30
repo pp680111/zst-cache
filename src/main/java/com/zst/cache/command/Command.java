@@ -11,7 +11,7 @@ public abstract class Command {
      * 获取命令名称
      * @return
      */
-    protected abstract String getName();
+    public abstract String getName();
 
     /**
      * 命令执行的入口方法

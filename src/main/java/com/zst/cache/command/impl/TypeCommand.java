@@ -12,7 +12,7 @@ import com.zst.cache.data.RESPSimpleString;
 
 public class TypeCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "TYPE";
     }
 
