@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ConfigSeriesCommand extends Command {
     @Override
-    protected String getName() {
+    public String getName() {
         return "CONFIG";
     }
 
