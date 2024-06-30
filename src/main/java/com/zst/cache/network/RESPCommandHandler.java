@@ -5,6 +5,7 @@ import com.zst.cache.command.Command;
 import com.zst.cache.command.CommandManager;
 import com.zst.cache.command.CommonReply;
 import com.zst.cache.core.Cache;
+import com.zst.cache.core.CacheCommandFuture;
 import com.zst.cache.data.RESPArray;
 import com.zst.cache.data.RESPBulkString;
 import com.zst.cache.data.RESPData;
@@ -42,12 +43,9 @@ public class RESPCommandHandler extends ChannelInboundHandlerAdapter {
         }
 
         try {
-            RESPData result = command.execute(cache, commandArray);
-            if (result != null) {
-                return result;
-            } else {
-                throw new RuntimeException("Command execute failed");
-            }
+            CacheCommandFuture future = cache.executeCommand(command, commandArray);
+            future.get();
+            return future.getResult();
         } catch (Exception e) {
             log.error("execute command failed", e);
             return CommonReply.EXECUTE_FAILED;
