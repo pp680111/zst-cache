@@ -12,12 +12,17 @@ public interface CommonReply {
     /**
      * OK
      */
-   RESPSimpleString OK = new RESPSimpleString("OK");
+    RESPSimpleString OK = new RESPSimpleString("OK");
 
     /**
      * NONE
      */
     RESPSimpleString NONE = new RESPSimpleString("none");
+
+    /**
+     * 0
+     */
+    RESPInteger ZERO = new RESPInteger(0);
 
     /**
      * -2
@@ -36,7 +41,7 @@ public interface CommonReply {
     RESPErrors UNKNOWN_COMMAND = new RESPErrors("ERR", "unknown command '%s'");
 
     /**
-     *  未知错误
+     * 未知错误
      */
     RESPErrors UNKNOWN_ERROR = new RESPErrors("ERR", "unknown error");
 
@@ -52,12 +57,12 @@ public interface CommonReply {
     RESPErrors WRONG_DATA_TYPE = new RESPErrors("WRONGTYPE", "Operation against a key holding the wrong kind of value");
 
     /**
-     *  参数数量错误的标准返回
+     * 参数数量错误的标准返回
      */
     RESPErrors WRONG_ARG_NUMBER = new RESPErrors("ERR", "wrong number of arguments for command");
 
     /**
-     *  参数类型错误的标准返回
+     * 参数类型错误的标准返回
      */
     RESPErrors WRONG_ARG_TYPE = new RESPErrors("ERR", "wrong type of arguments for command");
 }

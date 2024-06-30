@@ -1,15 +1,6 @@
 package com.zst.cache.command;
 
-import com.zst.cache.command.impl.ClientCommand;
-import com.zst.cache.command.impl.ConfigSeriesCommand;
-import com.zst.cache.command.impl.GetCommand;
-import com.zst.cache.command.impl.InfoCommand;
-import com.zst.cache.command.impl.PingCommand;
-import com.zst.cache.command.impl.QuitCommand;
-import com.zst.cache.command.impl.ScanCommand;
-import com.zst.cache.command.impl.SetCommand;
-import com.zst.cache.command.impl.TtlCommand;
-import com.zst.cache.command.impl.TypeCommand;
+import com.zst.cache.command.impl.*;
 import com.zst.cache.data.RESPArray;
 import com.zst.cache.data.RESPBulkString;
 
@@ -38,6 +29,7 @@ public class CommandManager {
         registerCommand("set", new SetCommand());
         registerCommand("get", new GetCommand());
         registerCommand("scan", new ScanCommand());
+        registerCommand("exists", new ExistsCommand());
 
     }
 
