@@ -3,6 +3,8 @@ package com.zst.cache.command.impl;
 import com.zst.cache.command.Command;
 import com.zst.cache.command.CommonReply;
 import com.zst.cache.core.Cache;
+import com.zst.cache.core.CacheEntity;
+import com.zst.cache.core.EntityType;
 import com.zst.cache.data.RESPArray;
 import com.zst.cache.data.RESPBulkString;
 import com.zst.cache.data.RESPData;
@@ -17,17 +19,32 @@ public class TypeCommand extends Command {
     @Override
     public RESPData execute(Cache cache, RESPArray args) {
         String arg = ((RESPBulkString) args.getValue().get(1)).getValue();
-        Object value = cache.get(arg);
+        CacheEntity value = cache.get(arg);
         if (value == null) {
             return CommonReply.NONE;
         }
 
-        return new RESPSimpleString(checkValueType(cache, value));
+        String type = "";
+        switch (value.getType()) {
+            case EntityType.STRING:
+                type = "string";
+                break;
+            case EntityType.LIST:
+                type = "list";
+                break;
+            case EntityType.SET:
+                type = "set";
+                break;
+            case EntityType.HASH:
+                type = "hash";
+                break;
+        }
+
+        if (type.isEmpty()) {
+            return CommonReply.UNKNOWN_ERROR;
+        }
+        return new RESPSimpleString(type);
     }
 
-    private String checkValueType(Cache cache, Object value) {
-        // TODO 临时应付的实现，后续需调整
-        return "string";
-    }
 }
 

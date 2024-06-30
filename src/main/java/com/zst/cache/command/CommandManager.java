@@ -25,16 +25,20 @@ public class CommandManager {
     private static Map<String, Command> commandMap = new LinkedHashMap<>();
 
     static {
+        // 系统相关
         registerCommand("client",  new ClientCommand());
         registerCommand("ping",  new PingCommand());
-        registerCommand("set", new SetCommand());
-        registerCommand("get", new GetCommand());
-        registerCommand("scan", new ScanCommand());
         registerCommand("config", new ConfigSeriesCommand());
         registerCommand("quit", new QuitCommand());
         registerCommand("info", new InfoCommand());
         registerCommand("type", new TypeCommand());
         registerCommand("ttl", new TtlCommand());
+
+        // keys
+        registerCommand("set", new SetCommand());
+        registerCommand("get", new GetCommand());
+        registerCommand("scan", new ScanCommand());
+
     }
 
     /**

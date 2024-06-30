@@ -8,13 +8,13 @@ import java.util.Set;
  * 缓存数据核心
  */
 public class Cache {
-    private Map<String, Object> coreMap = new HashMap<>(512);
+    private Map<String, CacheEntity> coreMap = new HashMap<>(512);
 
-    public void put(String key, Object value) {
+    public void put(String key, CacheEntity value) {
         coreMap.put(key, value);
     }
 
-    public Object get(String key) {
+    public CacheEntity get(String key) {
         return coreMap.get(key);
     }
 

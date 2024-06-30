@@ -3,6 +3,7 @@ package com.zst.cache.command.impl;
 import com.zst.cache.command.Command;
 import com.zst.cache.command.CommonReply;
 import com.zst.cache.core.Cache;
+import com.zst.cache.core.StringEntity;
 import com.zst.cache.data.RESPArray;
 import com.zst.cache.data.RESPBulkString;
 import com.zst.cache.data.RESPData;
@@ -34,7 +35,7 @@ public class SetCommand extends Command {
             return CommonReply.WRONG_ARG_TYPE;
         }
 
-        cache.put(key.getValue(), value.getValue());
+        cache.put(key.getValue(), new StringEntity(value.getValue()));
 
         return CommonReply.OK;
     }

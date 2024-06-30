@@ -2,6 +2,7 @@ package com.zst.cache.command;
 
 import com.zst.cache.data.RESPBulkString;
 import com.zst.cache.data.RESPErrors;
+import com.zst.cache.data.RESPInteger;
 import com.zst.cache.data.RESPSimpleString;
 
 /**
@@ -17,6 +18,11 @@ public interface CommonReply {
      * NONE
      */
     RESPSimpleString NONE = new RESPSimpleString("none");
+
+    /**
+     * -2
+     */
+    RESPInteger NEG_2 = new RESPInteger(-2);
 
     /**
      * 空Bulk String

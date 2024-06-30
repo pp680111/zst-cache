@@ -21,6 +21,7 @@ TODO:
   * DECR
   * STRLEN
 * 研究一下Redis的SCAN命令的实现方式
+* 模拟redis的线程模式，实现一个类似的
 
 总之就是自己挑一些用到的实现了
 
