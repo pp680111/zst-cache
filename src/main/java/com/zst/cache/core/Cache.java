@@ -19,15 +19,15 @@ import java.util.concurrent.TimeUnit;
 public class Cache {
     private final Thread coreThread;
     private Map<String, CacheEntity> coreMap;
-
     private final BlockingQueue<CacheCommandFuture> operationQueue;
+    private long lastTimeMillis;
 
     public Cache() {
         this.coreThread = new Thread(new CacheCoreRunner());
         this.coreThread.setName("cache-core-thread");
 
         this.coreMap = new HashMap<>(512);
-        this.operationQueue = new LinkedBlockingQueue<>(1000);
+        this.operationQueue = new LinkedBlockingQueue<>();
 
         coreThread.start();
     }
@@ -50,6 +50,9 @@ public class Cache {
         return coreMap.keySet();
     }
 
+    /**
+     * 内部core线程调用，负责执行添加到队列中的命令
+     */
     private void executeCommand() {
         CacheCommandFuture commandFuture = null;
         try {
@@ -70,6 +73,21 @@ public class Cache {
     }
 
     /**
+     * 内部核心线程调用-
+     */
+    private void updateTtl() {
+        long currentTimeMillis = System.currentTimeMillis();
+        if ((currentTimeMillis - lastTimeMillis) > 1000) {
+            this.lastTimeMillis =  currentTimeMillis;
+            this.coreMap.forEach((key, value) -> {
+                if (value.getTtl() > 0) {
+                    value.setTtl(value.getTtl() - 1);
+                }
+            });
+        }
+    }
+
+    /**
      *  缓存核心线程
      */
     private class CacheCoreRunner implements Runnable {
@@ -80,6 +98,7 @@ public class Cache {
                 // 从command队列中拿出可以执行的命令
                 executeCommand();
                 // 更新ttl
+                updateTtl();
                 // 执行数据删除
             }
         }
